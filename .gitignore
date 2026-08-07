@@ -1,4 +1,14 @@
+# Secrets — never commit
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local-only working notes — kept for this project's own future dev,
+# never meant for the public repo
+CLAUDE.md
+
 __pycache__/
 *.pyc
 .venv/

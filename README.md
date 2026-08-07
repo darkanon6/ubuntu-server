@@ -153,11 +153,18 @@ Container status and system stats require a real Docker socket and Netdata insta
 
 ### Security notes
 
-- The Docker socket mount gives this container real power over the whole host — treat it as high-privilege, and don't add unrelated things into the same image later.
-- ttyd has no `ports:` mapping in `docker-compose.yml` on purpose; it's reachable only through the dashboard's own authenticated proxy.
-- Secrets live in `.env`, which is gitignored and never committed.
+What's already handled:
+- The whole dashboard sits behind a login — every page and every API route, including the terminal's WebSocket connection specifically (it isn't covered by the shared auth middleware, so it checks the session itself).
+- Login compares credentials with `secrets.compare_digest` (constant-time) and refuses to start comparing at all if credentials aren't configured — fails closed, not open.
+- Secrets live in `.env`, which is gitignored, `.dockerignore`d, and never committed.
+- ttyd has no `ports:` mapping in `docker-compose.yml` on purpose; it's reachable only through the dashboard's own authenticated reverse proxy, never directly.
+- `/api/containers` only ever returns name/status/image/ports/restart-count/uptime — never full container `attrs` (which can include other containers' environment variables), never logs, never a code-execution path.
+- Intended to run reachable only over Tailscale (or an equivalent private network), never with a port opened to the public internet.
 
-See [CLAUDE.md](./CLAUDE.md) for build-history detail, architecture notes, and everything verification found when this was actually deployed.
+Known trade-offs, left as-is on purpose rather than hidden:
+- **The Docker socket mount gives this container real power over the whole host.** There's no way around that and still have the container-status feature — treat this container as high-privilege, and don't add unrelated things into the same image later.
+- **No rate limiting on `/api/login`.** For a single-user tool that's already gated behind a private network, this was judged an acceptable trade-off over the added complexity of a rate limiter — but it means brute-forcing the password isn't actively slowed down once someone's on the network.
+- **ttyd runs as root with a fixed `bash` shell**, not a scoped-down user. Anyone who can log into the dashboard gets a root shell on the host. This is intentional for a personal admin tool, but is exactly why the login above is the only thing standing between "convenient" and "dangerous" — still an open decision whether to scope it down.
 
 ## Open items
 
