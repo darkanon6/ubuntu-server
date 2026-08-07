@@ -1,3 +1,30 @@
+async function loadSystem() {
+  const list = document.getElementById("system");
+  try {
+    const res = await fetch("/api/system");
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.detail || `${res.status} ${res.statusText}`);
+    }
+    const s = await res.json();
+
+    list.innerHTML = "";
+    const items = [
+      `CPU: ${s.cpu_percent}%`,
+      `RAM: ${s.ram.used_mb} / ${s.ram.total_mb} MB (${s.ram.percent}%)`,
+      `Disk: ${s.disk.used_gb} / ${s.disk.total_gb} GB (${s.disk.percent}%)`,
+      `Net: ↓ ${s.net.received_kbps} kb/s ↑ ${s.net.sent_kbps} kb/s`,
+    ];
+    for (const text of items) {
+      const li = document.createElement("li");
+      li.textContent = text;
+      list.appendChild(li);
+    }
+  } catch (err) {
+    list.innerHTML = `<li>Failed to load system stats: ${err.message}</li>`;
+  }
+}
+
 async function loadContainers() {
   const list = document.getElementById("containers");
   try {
@@ -24,4 +51,5 @@ async function loadContainers() {
   }
 }
 
+loadSystem();
 loadContainers();
