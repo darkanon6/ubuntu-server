@@ -1,6 +1,6 @@
 # Project Log — Server Dashboard
 
-A running record of decisions, dead ends, and pivots for the dashboard sub-project specifically. `HOMELAB-JOURNEY.md` covers the server's whole life; this covers just this app, going forward. Updated after significant milestones, not every commit.
+A running record of decisions, dead ends, and pivots for the dashboard sub-project specifically. `README.md` covers the server's whole life plus this app; this log is the ongoing decision/pivot history for just the dashboard, going forward. Updated after significant milestones, not every commit.
 
 ## 2026-08-07 — Planning and repo layout
 
@@ -32,7 +32,7 @@ None of these were exotic — each one is the kind of thing that only exists at 
 
 ## Open
 
-- README, journey doc, and this log are now written; `HOMELAB-PROJECT-LOG.md` phases 1–7 got folded into `HOMELAB-JOURNEY.md` as phases 1–7, with the dashboard as phase 8.
+- README and this log are now written. Originally split into a separate `HOMELAB-JOURNEY.md` (full narrative) and a thin `README.md` (front door linking to it), then consolidated into one `README.md` on request — `HOMELAB-PROJECT-LOG.md` phases 1–7 are folded in there as phases 1–7, with the dashboard as phase 8. `HOMELAB-PROJECT-LOG.md` itself stays as the original raw source material.
 - Still open: whether ttyd should keep running as root with a fixed `bash` shell or move to something more scoped (flagged in the original plan, not yet decided).
 - Still open: a real browser walkthrough — everything verified so far is `curl` and a raw WebSocket client, not an actual login-and-click-around session.
 - No GitHub remote connected yet; repo is local-only (`git init`), consistent with the plan's private-first approach.
