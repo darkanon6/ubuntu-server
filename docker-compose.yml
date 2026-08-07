@@ -15,6 +15,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       - ttyd
+    extra_hosts:
+      # The host's own hostname (e.g. `myserver`) resolves to 127.0.1.1 at
+      # the OS level (standard Debian/Ubuntu self-hostname convention) —
+      # inside a container that's the container's own loopback, not the
+      # host's, so it can't be used to reach host-published services like
+      # Netdata. host-gateway is Docker's portable way to reach the host.
+      - "host.docker.internal:host-gateway"
 
   ttyd:
     image: tsl0922/ttyd:latest

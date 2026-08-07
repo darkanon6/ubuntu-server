@@ -54,8 +54,13 @@ async def system_stats():
     disk_used = disk.get("used", 0)
     disk_total = sum(v for k, v in disk.items() if k in ("avail", "used"))
 
+    # Some Netdata versions/configs omit the "idle" dimension from
+    # system.cpu entirely, in which case the present dimensions already
+    # sum to total active %; when "idle" is present, subtract it instead.
+    cpu_percent = 100 - cpu["idle"] if "idle" in cpu else sum(cpu.values())
+
     return {
-        "cpu_percent": round(100 - cpu.get("idle", 0), 1),
+        "cpu_percent": round(cpu_percent, 1),
         "ram": {
             "used_mb": round(ram_used, 1),
             "total_mb": round(ram_total, 1),

@@ -50,17 +50,28 @@ async def proxy_ws(websocket: WebSocket):
         async with websockets.connect(f"{TTYD_WS_URL}/terminal/ws", subprotocols=["tty"]) as upstream:
 
             async def client_to_upstream():
+                # ttyd's protocol mixes frame types: the initial auth/size
+                # handshake is text (JSON), subsequent input is binary —
+                # receive_bytes()/receive_text() alone would drop one kind.
                 try:
                     while True:
-                        data = await websocket.receive_bytes()
-                        await upstream.send(data)
+                        message = await websocket.receive()
+                        if message["type"] == "websocket.disconnect":
+                            break
+                        if (text := message.get("text")) is not None:
+                            await upstream.send(text)
+                        elif (data := message.get("bytes")) is not None:
+                            await upstream.send(data)
                 except WebSocketDisconnect:
                     pass
 
             async def upstream_to_client():
                 try:
                     async for message in upstream:
-                        await websocket.send_bytes(message)
+                        if isinstance(message, str):
+                            await websocket.send_text(message)
+                        else:
+                            await websocket.send_bytes(message)
                 except ConnectionClosed:
                     pass
 
