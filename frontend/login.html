@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Server Dashboard — Login</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 320px; margin: 8rem auto; padding: 0 1rem; }
+    input { display: block; width: 100%; margin-bottom: 0.75rem; padding: 0.5rem; box-sizing: border-box; }
+    button { width: 100%; padding: 0.5rem; }
+    #error { color: #b00020; min-height: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>Server Dashboard</h1>
+  <form id="login-form">
+    <input type="text" id="username" placeholder="Username" autocomplete="username" required />
+    <input type="password" id="password" placeholder="Password" autocomplete="current-password" required />
+    <button type="submit">Log in</button>
+    <p id="error"></p>
+  </form>
+  <script>
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const errorEl = document.getElementById("error");
+      errorEl.textContent = "";
+      try {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.detail || "Login failed");
+        }
+        window.location.href = "/";
+      } catch (err) {
+        errorEl.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>

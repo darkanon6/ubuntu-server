@@ -1,3 +1,8 @@
+document.getElementById("logout").addEventListener("click", async () => {
+  await fetch("/api/logout", { method: "POST" });
+  window.location.href = "/login";
+});
+
 async function loadSystem() {
   const list = document.getElementById("system");
   try {
