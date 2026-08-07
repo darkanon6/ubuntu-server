@@ -5,9 +5,12 @@
 *.pem
 *.key
 
-# Local-only working notes — kept for this project's own future dev,
-# never meant for the public repo
+# Local-only working notes and planning docs — kept for this project's
+# own future dev, never meant for the public repo. README.md already
+# carries everything from these two that's meant for public readers.
 CLAUDE.md
+SERVER-DASHBOARD-PROJECT-PLAN.md
+HOMELAB-PROJECT-LOG.md
 
 __pycache__/
 *.pyc
