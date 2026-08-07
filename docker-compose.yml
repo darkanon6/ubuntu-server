@@ -9,5 +9,19 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    environment:
+      - TTYD_URL=http://ttyd:7681
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - ttyd
+
+  ttyd:
+    image: tsl0922/ttyd:latest
+    container_name: server-dashboard-ttyd
+    restart: always
+    command: ["ttyd", "--base-path", "/terminal", "-W", "bash"]
+    # Intentionally no `ports:` mapping — ttyd must only be reachable through
+    # the dashboard container's authenticated proxy (backend/routers/terminal.py),
+    # never directly. Verify this on the real server: `docker ps` should show
+    # no host port bound to this container.

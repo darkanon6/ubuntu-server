@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from backend.routers import auth, containers, system
+from backend.routers import auth, containers, system, terminal
 
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
@@ -38,6 +38,7 @@ app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY)
 app.include_router(auth.router, prefix="/api")
 app.include_router(containers.router, prefix="/api")
 app.include_router(system.router, prefix="/api")
+app.include_router(terminal.router)
 
 
 @app.get("/login")
