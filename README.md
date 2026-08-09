@@ -4,8 +4,7 @@ This is the story of turning a small physical PC into an always-on personal serv
 
 **Hardware:** Lenovo ThinkCentre M73 Tiny mini PC, 16GB RAM, 4 cores, 4TB SSD (OS installed directly on it)
 **OS:** Ubuntu Server
-**Hostname:** `myserver`
-**User:** `darkanon6`
+
 
 **Goals going in:**
 - Learn how to actually manage a server, not just use one
