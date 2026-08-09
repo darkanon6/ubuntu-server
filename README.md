@@ -2,7 +2,7 @@
 
 This is the story of turning a small physical PC into an always-on personal server, and eventually building a web dashboard to watch over it. It's written as a build log, not a highlight reel — the dead ends and pivots are included on purpose, because that's most of what actually happened.
 
-**Hardware:** Lenovo ThinkCentre M73 Tiny mini PC, 16GB RAM, 4 cores, 4TB SSD (OS installed directly on it)
+**Hardware:** Lenovo ThinkCentre M73 Tiny mini PC (OS installed directly on it)
 **OS:** Ubuntu Server
 
 
