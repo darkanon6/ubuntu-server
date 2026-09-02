@@ -192,10 +192,11 @@ Phase 4's and Phase 5's dead ends (the Syncthing path gotcha, the code-server PU
 
 - [ ] Discord webhook notifications for Uptime Kuma
 - [ ] Set up Windows client (10/11) container alongside Windows Server
-- [ ] Bake git identity into the code-server Dockerfile so it survives container recreation
 - [ ] Revisit Wake-on-LAN if the server ever moves to a wired Ethernet connection
-- [ ] Decide whether ttyd should keep running as root with a fixed shell, or move to something more scoped
-- [ ] Actually open the dashboard in a browser and click through it (everything so far has been verified via `curl` and a raw WebSocket client, not a real browser session)
+- [ ] Rotate the server's own system/sudo password (it had been reused as code-server's password before code-server was removed)
+- [ ] Decide on a backup approach for project files and key service configs/volumes — restic vs. a simple rsync-based script, and where to store it (external drive vs. another tailnet device)
+- [ ] Reconcile `~/windows-server/docker-compose.yml` — it was already out of sync with the live container's actual name/ports before the Phase 9 security pass, left untouched rather than guessed at
+- [ ] Evaluate Trivy for periodic image vulnerability scanning across the images currently in use
 
 ## Explicitly decided against / deferred
 
