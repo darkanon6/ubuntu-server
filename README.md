@@ -169,6 +169,25 @@ Known trade-offs, left as-is on purpose rather than hidden:
 - **No rate limiting on `/api/login`.** For a single-user tool that's already gated behind a private network, this was judged an acceptable trade-off over the added complexity of a rate limiter — but it means brute-forcing the password isn't actively slowed down once someone's on the network.
 - **ttyd runs as root with a fixed `bash` shell**, not a scoped-down user. Anyone who can log into the dashboard gets a root shell on the host. This is intentional for a personal admin tool, but is exactly why the login above is the only thing standing between "convenient" and "dangerous" — still an open decision whether to scope it down.
 
+## Phase 9 — Replacing the dashboard, then actually locking the server down
+
+The custom dashboard from Phase 8 worked, but got retired in favor of [Homarr](https://homarr.dev) — a homepage-style dashboard that already does "one page linking to every service with live Docker status" well, without maintaining custom auth and a terminal proxy just to get there.
+
+**Setting up Homarr** was mostly a straightforward `docker run` with a persistent config volume and Docker socket access for live container status, with one real gotcha: the current `ghcr.io/homarr-labs/homarr` image hard-requires a `SECRET_ENCRYPTION_KEY` (64-character hex) environment variable that isn't obvious from a quick skim of the setup docs — omit it and the container crash-loops on startup with "Invalid environment variables." Generated one with `openssl rand -hex 32` directly on the server.
+
+Standing up a new front door was a good excuse to finally look at server security properly, since up to this point the only protection was "it's Tailscale-only":
+
+- **SSH** — key-only login, no root login, capped auth attempts, restricted to a single user. One real config gotcha: Ubuntu's `sshd_config` reads `/etc/ssh/sshd_config.d/*.conf` *before* the rest of the main config file, and for any given setting, whichever value sshd sees *first* wins — later duplicates are silently ignored. A root-only `50-cloud-init.conf` already existed in that directory from the original install; naming the new file `10-hardening.conf` made it sort (and load) first, so it actually took effect regardless of what cloud-init had already set.
+- **Firewall** — `ufw` had never been touched and was completely inactive on every interface. Set to default-deny incoming / default-allow outgoing, with explicit allows for SSH (both the Tailscale range and the LAN, so a Tailscale outage alone can't cause a full lockout) and Netdata (Tailscale-only — Netdata has no authentication of its own, so no LAN fallback was given).
+- **The bigger discovery: Docker bypasses ufw.** Docker inserts its own `iptables` rules ahead of ufw's normal filtering chain for anything it publishes a port for, so `ufw default deny incoming` correctly governs native services (SSH, Netdata) but does *nothing* for Docker-published ports. "ufw enabled" would have been false confidence for almost every service on the box. The real fix: every externally-facing container (Homarr, Portainer, Uptime Kuma, plus code-server and Syncthing at the time) got its published port re-bound to the Tailscale IP specifically instead of `0.0.0.0`, so it simply doesn't listen on the LAN/WAN-facing interfaces at all — structurally unreachable regardless of firewall state. Syncthing needed a different fix than the others, since it runs in Docker's host-networking mode where port-bind flags don't apply; its GUI address is set via an `STGUIADDRESS` environment variable instead.
+- **A credential audit** turned up three real findings: Netdata has no authentication at all (confirmed by querying its API with zero credentials and getting full system data back); the Windows-in-Docker web console (Phase 7) had no password set; and code-server's password turned out to be the exact same one as the server's own SSH/sudo login — the password gating a browser-based VS Code instance was also the password gating root-equivalent server access. That specific exposure stopped mattering once code-server was removed entirely (Phase 10), but the habit is worth remembering regardless of what tool it applies to next.
+
+## Phase 10 — Simplifying: dropping Syncthing and code-server for Google Drive
+
+Not long after the security pass, Syncthing and code-server both got retired — Google Drive now covers the "keep files in sync across devices" need Syncthing was solving, and the day-to-day need for code-server (a browser-based dev environment reachable from an iPad) had faded. Both containers and their images were removed, along with their config directories and Syncthing's internal sync-index volume — but not the actual project files those containers had mounted, which were never anything the containers owned in the first place.
+
+Phase 4's and Phase 5's dead ends (the Syncthing path gotcha, the code-server PUID fix) are left as-written above; they were real problems solved at the time, even though the tools they were solving for aren't running anymore.
+
 ## Open items
 
 - [ ] Discord webhook notifications for Uptime Kuma
