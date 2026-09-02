@@ -79,7 +79,7 @@ Windows Server 2022 went in first and immediately hit a port-mapping bug: the co
 
 It's currently stopped deliberately (resumable anytime with `cd ~/windows-server && docker compose up -d`). A Windows client (10/11) container is planned but not started — separate compose file, separate data folder, separate ports. The hardware note that shaped this: 16GB RAM / 4 cores is enough for one Windows VM at a time alongside the lightweight services, but not for Server and client simultaneously — the plan is to start/stop whichever a given lab needs.
 
-## Phase 8 — The dashboard (the current chapter)
+## Phase 8 — The dashboard (retired — see Phase 9)
 
 Everything above was infrastructure. This phase is about building something to look *at* it — a single-pane web dashboard for container status, system stats, and a browser-based terminal, secured behind a login. It also doubles as this repo you're reading.
 
@@ -101,7 +101,11 @@ A smaller but still real one: the dashboard's port (8080, picked early in planni
 
 The lesson underlined by all four: nothing here counted as "working" until it ran against the real Docker socket, the real Netdata instance, and the real ttyd container — clean local failure-path testing is necessary but nowhere near sufficient.
 
+**Update — retired.** This dashboard ran on `myserver` for about a month before being decommissioned in favor of [Homarr](https://homarr.dev) — see Phase 9. Nothing here was broken; it was fully deployed and working, deployment bugs and all. A well-maintained, widely-used homepage-style tool covered the "one page linking to everything with live container status" need without the ongoing cost of maintaining custom auth and a terminal proxy just for that. The code, the bugs found, and the setup instructions below are kept as-written for reference.
+
 ## Running the dashboard
+
+> This specific instance is no longer deployed on `myserver` (see Phase 9) — the instructions below describe how to self-host this code if you want to run it yourself.
 
 ### What it does
 
