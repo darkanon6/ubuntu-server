@@ -38,7 +38,7 @@ MagicDNS turned the stable IPs into a stable hostname — `myserver` — instead
 Docker and Docker Compose went in via the official Docker repository method, and this is where the server started actually doing things:
 
 - **Portainer** — a web UI for Docker itself, at `http://myserver:9000`
-- **Netdata** — real-time system and per-container health (CPU, RAM, disk, network), at `http://myserver:19999`, also connected to Netdata Cloud
+- **Netdata** — real-time system and per-container health (CPU, RAM, disk, network), at `http://myserver:19999`, also connected to Netdata Cloud (later replaced by Glances — see Phase 11)
 - **Uptime Kuma** — a basic ping monitor, at `http://myserver:3001`
 
 Discord webhook notifications for Uptime Kuma were planned but deferred — still on the open-items list.
