@@ -201,10 +201,7 @@ Four more pieces landed in the same post-hardening cleanup, picked back up after
 
 ## Open items
 
-- [ ] Discord webhook notifications for Uptime Kuma
-- [ ] Revisit Wake-on-LAN if the server ever moves to a wired Ethernet connection
-
-The rest of this list as of Phase 11 — the sudo/system password rotation, a backup approach for project files and service configs/volumes, reconciling `~/windows-server/docker-compose.yml`, and evaluating Trivy for image scanning — have since been resolved. The specifics weren't captured in a session that made it into this file, so they're marked done here rather than walked through the way the rest of this log does.
+None currently open. Discord webhook notifications for Uptime Kuma and revisiting Wake-on-LAN are both done as of Phase 11 above, and the rest of the list as it stood then — the sudo/system password rotation, a backup approach for project files and service configs/volumes, reconciling `~/windows-server/docker-compose.yml`, and evaluating Trivy for image scanning — have also since been resolved. The specifics for that last group weren't captured in a session that made it into this file, so they're marked done here rather than walked through the way the rest of this log does.
 
 ## Explicitly decided against / deferred
 
