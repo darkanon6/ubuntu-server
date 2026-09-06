@@ -24,7 +24,7 @@ Then came the first real dead end: getting into the BIOS at all. F1/F2 went stra
 
 Once inside, three settings mattered:
 - **After Power Loss → Power On** — the server auto-boots after any power interruption, no manual intervention needed
-- **Wake-on-LAN enabled** — though it only works over wired Ethernet, and the server currently runs on WiFi, so WoL sits unused until/unless it gets plugged into Ethernet
+- **Wake-on-LAN enabled** — though it only works over wired Ethernet, and the server ran WiFi-only at the time, so WoL sat unused until it gained an Ethernet connection (see Phase 11)
 - **Virtualization (Intel VT-x) enabled** — needed later for running VMs (Windows-in-Docker) via QEMU/KVM
 
 ## Phase 2 — Reaching it from anywhere
