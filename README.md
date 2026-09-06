@@ -202,6 +202,7 @@ Four more pieces landed in the same post-hardening cleanup, picked back up after
 - **Nextcloud actually got deployed**, reversing the "tabled as a bigger future project" call made earlier — running alongside its own database container, reachable the same Tailscale-only way as everything else.
 - **Uptime Kuma picked up two more monitors**: the portfolio site and the Gateway Anime API, both already sharing the `homelab-internal` Docker network with Kuma, so they're checked by container name (`http://portfolio:8080`, `http://gateway-anime-api-1:4000`) rather than through Cloudflare — these monitors reflect container health, not the public-facing tunnel path. The Gateway Anime API needed its `/health` endpoint specifically, since the root path 404s. Discord alerts for both are wired up through Kuma's own Discord webhook notification type, which Kuma supports natively (unlike Better Stack above).
 - **The server gained a wired Ethernet connection alongside WiFi**, which made the Wake-on-LAN setting from Phase 1 usable for the first time — tested and confirmed working over Ethernet.
+- **`update-services-doc` and `~/SERVICES.md` (Phase 6) got retired.** Portainer and the rest of the monitoring stack (Homarr, Uptime Kuma, Glances) already cover "what's running and on what port" better than a manually-run script and a static markdown table ever did — `~/SERVICES.md` was deleted, and its script removed from `/usr/local/bin`.
 
 ## Open items
 
