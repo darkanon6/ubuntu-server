@@ -68,7 +68,7 @@ Two tools were tried and dropped along the way. **JetBrains Gateway** was set up
 Two small scripts made ongoing maintenance less manual:
 
 - **`update-system`** — runs `apt update`, `apt upgrade`, `apt autoremove`/`autoclean` in one shot, and reports whether a reboot is required.
-- **`update-services-doc`** — regenerates `~/SERVICES.md`, a live table of every running container and its ports/status. It preserves a manually-editable `## Notes` section across regenerations, so personal notes don't get wiped every run.
+- **`update-services-doc`** — regenerates `~/SERVICES.md`, a live table of every running container and its ports/status. It preserves a manually-editable `## Notes` section across regenerations, so personal notes don't get wiped every run. (Retired — see Phase 11.)
 
 ## Phase 7 — Windows-in-Docker for security labs (in progress)
 
