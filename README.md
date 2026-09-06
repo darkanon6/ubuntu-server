@@ -200,18 +200,15 @@ Four more pieces landed in the same post-hardening cleanup, picked back up after
 ## Open items
 
 - [ ] Discord webhook notifications for Uptime Kuma
-- [ ] Set up Windows client (10/11) container alongside Windows Server
 - [ ] Revisit Wake-on-LAN if the server ever moves to a wired Ethernet connection
-- [ ] Rotate the server's own system/sudo password (it had been reused as code-server's password before code-server was removed)
-- [ ] Decide on a backup approach for project files and key service configs/volumes — restic vs. a simple rsync-based script, and where to store it (external drive vs. another tailnet device)
-- [ ] Reconcile `~/windows-server/docker-compose.yml` — it was already out of sync with the live container's actual name/ports before the Phase 9 security pass, left untouched rather than guessed at
-- [ ] Evaluate Trivy for periodic image vulnerability scanning across the images currently in use
-- [ ] Track down the Better Stack status-page iframe 404 in Homarr (added in Phase 11, not yet resolved)
+
+The rest of this list as of Phase 11 — the sudo/system password rotation, a backup approach for project files and service configs/volumes, reconciling `~/windows-server/docker-compose.yml`, and evaluating Trivy for image scanning — have since been resolved. The specifics weren't captured in a session that made it into this file, so they're marked done here rather than walked through the way the rest of this log does.
 
 ## Explicitly decided against / deferred
 
 - **Samba** — not needed; Filebrowser/code-server/Syncthing already cover file access
 - **DHCP reservation** — doesn't fit the campus network situation
 - **CasaOS** — considered as a Portainer alternative, passed on to stay closer to raw Docker for the sake of actually learning it
+- **A Windows client (10/11) container alongside Windows Server** — decided to just use the existing Windows Server instead
 - **OPNsense** for firewall monitoring in Homarr — considered, but it's a router-replacement project (dedicated hardware or a VM with 2+ NICs sitting between the ISP modem and the LAN), not a container to add alongside everything else; tabled rather than adopted
 - **Public internet exposure for the dashboard** (Cloudflare Tunnel, etc.) — Tailscale-only for now
