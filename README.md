@@ -12,6 +12,8 @@ This is the story of turning a small physical PC into an always-on personal serv
 - Reach it from any device — laptop, phone, iPad — from anywhere
 - Keep it online and reachable without babysitting it
 
+![myserver's Homarr dashboard](myserver_dashboard.png)
+
 ## Phase 1 — Getting the hardware to behave
 
 Before anything else could run reliably, the machine itself had to stay on. The first move was masking sleep/suspend/hibernate at the OS level so the server would never nod off on its own:
