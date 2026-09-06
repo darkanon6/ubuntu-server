@@ -175,6 +175,8 @@ The custom dashboard from Phase 8 worked, but got retired in favor of [Homarr](h
 
 **Setting up Homarr** was mostly a straightforward `docker run` with a persistent config volume and Docker socket access for live container status, with one real gotcha: the current `ghcr.io/homarr-labs/homarr` image hard-requires a `SECRET_ENCRYPTION_KEY` (64-character hex) environment variable that isn't obvious from a quick skim of the setup docs — omit it and the container crash-loops on startup with "Invalid environment variables." Generated one with `openssl rand -hex 32` directly on the server.
 
+![myserver's Homarr dashboard](myserver_dashboard.png)
+
 Standing up a new front door was a good excuse to finally look at server security properly, since up to this point the only protection was "it's Tailscale-only":
 
 - **SSH** — key-only login, no root login, capped auth attempts, restricted to a single user. One real config gotcha: Ubuntu's `sshd_config` reads `/etc/ssh/sshd_config.d/*.conf` *before* the rest of the main config file, and for any given setting, whichever value sshd sees *first* wins — later duplicates are silently ignored. A root-only `50-cloud-init.conf` already existed in that directory from the original install; naming the new file `10-hardening.conf` made it sort (and load) first, so it actually took effect regardless of what cloud-init had already set.
